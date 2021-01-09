@@ -148,7 +148,7 @@ export default defineComponent({
           author: 'Porter Robinson',
           duration: '03:54',
           url:
-            'https://sq-sycdn.kuwo.cn/3e249380d1eb13b0b8b10fc7e32c07f7/5ff94834/resource/n3/17/3/3450935135.mp3',
+            'https://sq-sycdn.kuwo.cn/a926b5618089f47dad16ed47ac2a67c7/5ff95eef/resource/n3/17/3/3450935135.mp3',
           mark: 1,
         },
         {

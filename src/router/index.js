@@ -1,17 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import app from '@/App.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: import('@/components/home/index.vue'),
-    children: [
-      {
-        path: '',
-        component: import('@/components/home/rec/recommend.vue'),
-      },
-    ],
+    // components: { view1: import('@/components/home/index.vue') },
+    // children: [
+    //   {
+    //     path: '',
+    //     components: { view2: import('@/components/home/rec/recommend.vue') },
+    //   },
+    // ],
   },
 ]
 

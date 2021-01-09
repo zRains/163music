@@ -2,17 +2,18 @@
 <template>
   <div id="index">
     <Nav2 />
-    <router-view></router-view>
+    <Main />
   </div>
 </template>
 
 <script>
 import Nav2 from '@/components/home/nav2.vue'
-
+import Main from '@/components/home/rec/recommend.vue'
 import { defineComponent, reactive } from 'vue'
 export default defineComponent({
   components: {
     Nav2,
+    Main,
   },
   setup() {
     const state = reactive({})
@@ -23,6 +24,6 @@ export default defineComponent({
 
 <style scoped lang="scss">
 #index {
-    width: 100%;
+  width: 100%;
 }
 </style>
