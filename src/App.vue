@@ -1,20 +1,17 @@
 <template>
   <Nav />
-  <!-- <router-view name="view1"/> -->
-  <Index />
+  <router-view />
   <Player />
 </template>
 
 <script>
 import Nav from '@/components/nav/nav.vue'
 import Player from '@/components/player/player.vue'
-import Index from '@/components/home/index.vue'
 import { defineComponent, reactive } from 'vue'
 export default defineComponent({
   components: {
     Nav,
     Player,
-    Index,
   },
   setup() {
     const state = reactive({})

@@ -2,8 +2,8 @@
 <template>
   <div id="nav2">
     <ul>
-      <li class="active">推荐</li>
-      <li>排行榜</li>
+      <li class="active" @click="router.push('/')">推荐</li>
+      <li @click="router.push('/phb')">排行榜</li>
       <li>歌单</li>
       <li>主播电台</li>
       <li>歌手</li>
@@ -14,10 +14,12 @@
 
 <script>
 import { defineComponent, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 export default defineComponent({
   setup() {
+    const router = useRouter()
     const state = reactive({})
-    return { state }
+    return { state,router }
   },
 })
 </script>

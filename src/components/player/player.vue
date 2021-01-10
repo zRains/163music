@@ -12,7 +12,7 @@
         @click="
           changeSong(
             --state.player_target < 0
-              ? state.player_list.length - 1
+              ? player_list.length - 1
               : state.player_target
           )
         "
@@ -24,19 +24,21 @@
       /></span>
       <span
         title="下一曲"
-        @click="changeSong(++state.player_target % state.player_list.length)"
+        @click="changeSong(++state.player_target % player_list.length)"
       >
         <img :src="state.imgs.next"
       /></span>
     </div>
     <div class="songInfo">
-      <span class="songImge">{{
-        state.player_list[state.player_target].song_name[0]
-      }}</span>
+      <span class="songImge">{{ 'S' }}</span>
       <div class="barArea">
         <section class="info">
-          <span>{{ state.player_list[state.player_target].song_name }}</span>
-          <span>{{ state.player_list[state.player_target].author }}</span>
+          <span>{{
+            player_list != 0 ? player_list[state.player_target].song_name : ''
+          }}</span>
+          <span>{{
+            player_list != 0 ? player_list[state.player_target].author : ''
+          }}</span>
         </section>
         <section class="bar" ref="musicBar">
           <div class="barFlag">
@@ -82,9 +84,9 @@
         <div class="head">
           <span>播放列表</span>
         </div>
-        <ul>
+        <ul v-if="player_list.length">
           <li
-            v-for="(item, index) in state.player_list"
+            v-for="(item, index) in player_list"
             :key="index"
             @click="changeSong(index)"
           >
@@ -99,7 +101,9 @@
       </section>
       <section class="lyric">
         <div class="head">
-          <span>{{ state.player_list[state.player_target].song_name }}</span>
+          <span>{{
+            player_list != 0 ? player_list[state.player_target].song_name : ''
+          }}</span>
           <span
             @click="state.pane_show = !state.pane_show"
             :class="{ disable: !state.pane_show }"
@@ -115,14 +119,17 @@
 
 <script>
 import { defineComponent, reactive, ref, onMounted } from 'vue'
+import { useStore } from 'vuex'
 export default defineComponent({
   setup() {
+    const store = useStore()
     const musicPlayer = ref(null)
     const musicBar = ref(null)
     let time2 = null
     let time1 = null
     let barFlagSpan = null
     let barFlagCur = null
+    const player_list = store.getters.getPlayerList
     const state = reactive({
       imgs: {
         pre: require('@/assets/svg/pre.svg'),
@@ -142,32 +149,6 @@ export default defineComponent({
       player_show: true,
       player_lock: true,
       player_bar_moving: true,
-      player_list: [
-        {
-          song_name: 'Shelter',
-          author: 'Porter Robinson',
-          duration: '03:54',
-          url:
-            'https://sq-sycdn.kuwo.cn/a926b5618089f47dad16ed47ac2a67c7/5ff95eef/resource/n3/17/3/3450935135.mp3',
-          mark: 1,
-        },
-        {
-          song_name: 'Hanezeve Caradhina',
-          author: 'Kevin Penkin',
-          duration: '03:21',
-          url:
-            'https://nx01-sycdn.kuwo.cn/883ecb762a00b368894a962bf7063d1f/5ff947c4/resource/n2/33/45/733301250.mp3',
-          mark: 1,
-        },
-        {
-          song_name: 'China-X',
-          author: '徐梦圆',
-          duration: '03:46',
-          url:
-            'https://eq-sycdn.kuwo.cn/33c23094ad400ed2f196fe8a6625af18/5ff95062/resource/n2/60/76/2212019226.mp3',
-          mark: 1,
-        },
-      ],
       player_target: 0,
       pane_show: false,
       volume_show: false,
@@ -194,8 +175,9 @@ export default defineComponent({
     }
     const PLAY = function(e) {
       let PLAYER = musicPlayer.value
-      if (!!!PLAYER) return
-      time2.innerText = state.player_list[state.player_target].duration
+      if (!!!PLAYER || !player_list) return
+      if (!PLAYER.src) PLAYER.src = player_list[state.player_target].url
+      time2.innerText = player_list[state.player_target].duration
       if (PLAYER.paused) {
         PLAYER.play()
         state.player_status = true
@@ -218,10 +200,10 @@ export default defineComponent({
     }
     const changeSong = function(index) {
       let PLAYER = musicPlayer.value
-      if (!!!PLAYER) return
+      if (!!!PLAYER || !player_list) return
       state.player_target = index
-      PLAYER.src = state.player_list[state.player_target].url
-      time2.innerText = state.player_list[state.player_target].duration
+      PLAYER.src = player_list[state.player_target].url
+      time2.innerText = player_list[state.player_target].duration
       state.player_status = true
       PLAYER.play()
     }
@@ -269,9 +251,9 @@ export default defineComponent({
       barFlagSpan = musicBar.value.querySelector('span.tap')
       barFlagCur = musicBar.value.querySelector('span.curBar')
       closePlayer()
-      if (!!musicPlayer) {
+      if (!!musicPlayer && !player_list) {
         musicPlayer.value.volume = state.volume
-        musicPlayer.value.src = state.player_list[state.player_target].url
+        musicPlayer.value.src = player_list[state.player_target].url
       }
     })
     return {
@@ -283,6 +265,7 @@ export default defineComponent({
       setVolume,
       setCurrentTime,
       changeSong,
+      player_list,
     }
   },
 })

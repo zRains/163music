@@ -23,7 +23,9 @@
         :style="'background-image:url(' + state.imgs.appicon2 + ')'"
       ></div>
 
-      <div id="arrow_right"><img :src="state.imgs.arrow" /></div>
+      <div id="arrow_right">
+        <img :src="state.imgs.arrow" />
+      </div>
     </div>
     <div
       class="wapper_fliter"

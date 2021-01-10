@@ -1,4 +1,4 @@
-<!--  -->
+<!-- nav -->
 <template>
   <div id="nav">
     <span id="logo" :style="'background-image:url(' + state.imgs.logo + ')'">
@@ -15,7 +15,12 @@
       <section class="search">
         <label>
           <img :src="state.imgs.search"/>
-          <input type="text" id="search" placeholder="音乐/视频/电台/用户"
+          <input
+            type="text"
+            id="search"
+            placeholder="音乐/视频/电台/用户"
+            v-model="state.search_text"
+            @keydown.enter="startSearch"
         /></label>
       </section>
       <section class="creator">创作者中心</section>
@@ -25,16 +30,26 @@
 </template>
 
 <script>
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 export default defineComponent({
   setup() {
+    const router = useRouter()
+    const store = useStore()
     const state = reactive({
       imgs: {
         logo: require('@/assets/svg/logo.svg'),
         search: require('@/assets/svg/search.svg'),
       },
+      search_text: '',
     })
-    return { state }
+    const startSearch = function() {
+      store.commit('setSearchText', state.search_text)
+      state.search_text = ''
+      router.push({ path: '/search' })
+    }
+    return { state, startSearch }
   },
 })
 </script>

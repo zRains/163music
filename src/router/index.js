@@ -1,15 +1,27 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import index from '@/components/home/index.vue'
+import recommend from '@/components/home/rec/recommend.vue'
+import search from '@/components/home/search/search.vue'
+import phb from '@/components/home/phb/phb.vue'
 
 const routes = [
   {
     path: '/',
-    // components: { view1: import('@/components/home/index.vue') },
-    // children: [
-    //   {
-    //     path: '',
-    //     components: { view2: import('@/components/home/rec/recommend.vue') },
-    //   },
-    // ],
+    component: index,
+    children: [
+      {
+        path: '',
+        component: recommend,
+      },
+      {
+        path: 'search',
+        component: search,
+      },
+      {
+        path: 'phb',
+        component: phb,
+      },
+    ],
   },
 ]
 
